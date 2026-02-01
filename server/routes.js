@@ -49,6 +49,7 @@ router.post("/auth/login", withDB, async (req, res) => {
 
 /* Get full profile */
 router.get("/profile", withDB, async (req, res) => {
+  res.set("Cache-Control", "no-store");
   const profile = await Profile.findOne();
   res.json(profile);
 });

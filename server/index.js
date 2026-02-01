@@ -11,8 +11,8 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://api-me-frontend.vercel.app/",
-    methods: ["GET", "POST", "PUT"],
+    origin: "https://api-me-frontend.vercel.app",
+    methods: ["GET", "POST", "PUT", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
