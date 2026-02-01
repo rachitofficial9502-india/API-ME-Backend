@@ -66,6 +66,7 @@ Create a `.env` file in the project root:
 ```env
 MONGODB_URI=your_mongodb_atlas_uri
 JWT_SECRET=your_secret_key
+```
 
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD=admin123
@@ -93,25 +94,25 @@ http://localhost:3000
 
 ## API Endpoints
 
-Health Check
+Health Check: 
 GET /api/health
 
-Get Profile (Public)
+Get Profile (Public): 
 GET /api/profile
 
-Update Profile (Protected)
-PUT /api/profile
+Update Profile (Protected): 
+PUT /api/profile 
 Authorization: Bearer <token>
 
-List Projects
+List Projects: 
 GET /api/projects
 
-Search Skills
+Search Skills: 
 GET /api/search/skills?skill=python
 
-Search Projects by Tech
+Search Projects by Tech: 
 GET /api/search/projects?tech=node
 
-Generic Search
+Generic Search: 
 GET /api/search?q=ai
 
