@@ -10,23 +10,21 @@ import { connectDB } from "./db.js";
 
 export const router = express.Router();
 
-router.use(async (req, res, next) => {
+async function withDB(req, res, next) {
   try {
     await connectDB();
     next();
   } catch (err) {
-    console.error("DB error:", err);
-    res.status(500).json({ error: "DB connection failed" });
+    console.error("DB connection failed:", err);
+    res.status(500).json({ error: "Database unavailable" });
   }
-});
+}
 
-
-/* Health */
 router.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-router.post("/auth/login", async (req, res) => {
+router.post("/auth/login", withDB, async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -50,13 +48,13 @@ router.post("/auth/login", async (req, res) => {
 
 
 /* Get full profile */
-router.get("/profile", async (req, res) => {
+router.get("/profile", withDB, async (req, res) => {
   const profile = await Profile.findOne();
   res.json(profile);
 });
 
 /* Update profile (single-user upsert) */
-router.put("/profile", authRequired, async (req, res) => {
+router.put("/profile", authRequired, withDB, async (req, res) => {
   const profile = await Profile.findOneAndUpdate(
     {},
     req.body,
@@ -68,7 +66,7 @@ router.put("/profile", authRequired, async (req, res) => {
 /* ---------------- QUERY ENDPOINTS ---------------- */
 
 /* Search by skill */
-router.get("/search/skills", async (req, res) => {
+router.get("/search/skills", withDB, async (req, res) => {
   const { skill } = req.query;
 
   if (!skill) {
@@ -83,13 +81,13 @@ router.get("/search/skills", async (req, res) => {
 });
 
 /* List all projects */
-router.get("/projects", async (req, res) => {
+router.get("/projects", withDB, async (req, res) => {
   const profile = await Profile.findOne();
   res.json(profile?.projects || []);
 });
 
 /* Search projects by tech */
-router.get("/search/projects", async (req, res) => {
+router.get("/search/projects", withDB, async (req, res) => {
   const { tech } = req.query;
 
   if (!tech) {
@@ -112,7 +110,7 @@ router.get("/search/projects", async (req, res) => {
 });
 
 /* Generic search */
-router.get("/search", async (req, res) => {
+router.get("/search", withDB, async (req, res) => {
   const { q } = req.query;
   if (!q) {
     return res.status(400).json({ error: "q query is required" });
