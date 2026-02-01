@@ -1,5 +1,5 @@
 import express from "express";
-import { Profile } from "./Profile.js";
+import { Profile } from "./profile.js";
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
