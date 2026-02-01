@@ -6,7 +6,20 @@ import jwt from "jsonwebtoken";
 import { User } from "./user.js";
 import { authRequired } from "./auth.js";
 
+import { connectDB } from "./db.js";
+
 export const router = express.Router();
+
+router.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB error:", err);
+    res.status(500).json({ error: "DB connection failed" });
+  }
+});
+
 
 /* Health */
 router.get("/health", (req, res) => {

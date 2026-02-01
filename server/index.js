@@ -2,8 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import cors from "cors";
-import { connectDB } from "./db.js";
 import { router } from "./routes.js";
 
 import bcrypt from "bcryptjs";
@@ -12,25 +10,7 @@ import { User } from "./user.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*", // later: restrict to frontend domain
-    methods: ["GET", "POST", "PUT"],
-    allowedHeaders: ["Content-Type"]
-  })
-);
-
 app.use(express.json());
-
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    console.error("DB connection error:", err);
-    res.status(500).json({ error: "Database connection failed" });
-  }
-});
 
 const existingUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
 
