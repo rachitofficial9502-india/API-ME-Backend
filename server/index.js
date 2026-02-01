@@ -22,7 +22,15 @@ app.use(
 
 app.use(express.json());
 
-await connectDB();
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB connection error:", err);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
 
 const existingUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
 
