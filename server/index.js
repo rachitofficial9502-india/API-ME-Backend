@@ -39,10 +39,5 @@ if (!existingUser) {
 
 app.use("/api", router);
 
-// OPTIONAL for now...
-app.use(express.static("client"));
+export default app;
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
