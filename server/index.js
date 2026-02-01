@@ -3,14 +3,19 @@ dotenv.config();
 
 import express from "express";
 import { router } from "./routes.js";
-
-import bcrypt from "bcryptjs";
-import { User } from "./user.js";
-
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+);
 
 app.use("/api", router);
 
